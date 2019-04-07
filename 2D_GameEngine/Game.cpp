@@ -60,6 +60,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addComponent<SpriteComponent>("player",true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
+	player.addComponent<InventoryComponent>(10);
 	player.addGroup(groupPlayers);
 
 	/*//Examples
