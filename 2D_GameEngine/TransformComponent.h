@@ -51,4 +51,12 @@ public:
 		position.x += velocity.x * speed;
 		position.y += velocity.y * speed;
 	}
+
+	void setPos(Vector2D pos) {
+		position = pos;
+	}
+
+	void offsetPos(Vector2D pos) {
+		position += pos;
+	}
 };
