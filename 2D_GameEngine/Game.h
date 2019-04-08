@@ -31,7 +31,8 @@ public:
 		groupMap,
 		groupPlayers,
 		groupColliders,
-		groupProjectiles
+		groupProjectiles,
+		groupDroppedItems
 	};
 
 private:
