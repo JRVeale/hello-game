@@ -58,6 +58,7 @@ public:
 		}
 		e->delGroup(Game::groupDroppedItems);	//doesn't matter if didnt have group...
 		heldItems.push_back(e);
+		e->destroy();	//causes manager to remove from groupedEntities
 		slotsFilled++;	//replace with adding to stack if needed
 		/*There's definitely a much better way of doing stacking though...
 		I don't need to track every individual apple until it ceases to exist,
@@ -69,6 +70,20 @@ public:
 
 	void removeItem(Entity* e){
 		heldItems.remove(e);
+		slotsFilled--;
+	}
+
+	void dropItem(Entity* e, Vector2D offset) {
+		removeItem(e);
+		//Set item's pos to that of holder
+		Vector2D holderPos = entity->getComponent<TransformComponent>().position;
+		e->getComponent<TransformComponent>().setPos(Vector2D(150,150));
+		//Offset the position (a very basic version of throwing in 'front')
+		e->getComponent<TransformComponent>().offsetPos(offset);
+		//Adds back to assetmanager, so game will render, check collisions, etc
+		//e->addGroup(Game::groupDroppedItems);
+		//Something about this above breaks groupDroppedItems
+
 	}
 
 	void sort(){
