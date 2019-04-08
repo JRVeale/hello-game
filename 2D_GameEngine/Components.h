@@ -8,3 +8,4 @@
 #include "ColliderComponent.h"
 #include "TileComponent.h"
 #include "ProjectileComponent.h"
+#include "InventoryComponent.h"

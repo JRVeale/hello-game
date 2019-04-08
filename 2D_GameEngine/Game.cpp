@@ -57,10 +57,26 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	
 	//TODO: make a CreatePlayer() in AssetManager
 	player.addComponent<TransformComponent>(2);
-	player.addComponent<SpriteComponent>("player",true);
+	player.addComponent<SpriteComponent>("player", true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
+	player.addComponent<InventoryComponent>(10);
 	player.addGroup(groupPlayers);
+
+	/*//Examples
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(600, 600), "testItem");
+	assets->CreateDroppedItem(Vector2D(500, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(600, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(300, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(270, 200), "testItem");
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
+	*/
 
 	/*//Examples
 	assets->CreateProjectile(Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
@@ -74,6 +90,7 @@ auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
+auto& droppedItems(manager.getGroup(Game::groupDroppedItems));
 
 void Game::handleEvents() {
 	
@@ -113,6 +130,18 @@ void Game::update() {
 		}
 	}
 
+	for (auto& i : droppedItems) {
+		SDL_Rect iCol = i->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(iCol, playerCol)) {
+			if (player.getComponent<InventoryComponent>().addItem(i)) {
+				std::cout << "Player picked up dropped item!" << std::endl;
+			}
+			else {
+				std::cout << "Player inventory full!" << std::endl;
+			}
+		}
+	}
+
 	//Replace these with window size variables (these are halved here)
 	camera.x = static_cast<int>(player.getComponent<TransformComponent>().position.x - 400);
 	camera.y = static_cast<int>(player.getComponent<TransformComponent>().position.y - 320);
@@ -136,7 +165,8 @@ void Game::render() {
 	SDL_RenderClear(renderer);
 	for (auto& t : tiles) { t->draw(); }
 	//remove this to hide colliders (TODO: better to have a debug key though!)
-	for (auto& c : colliders) { c->draw(); } 
+	for (auto& c : colliders) { c->draw(); }
+	for (auto& i : droppedItems) { i->draw(); }
 	for (auto& p : players) { p->draw(); }
 	for (auto& p : projectiles) { p->draw(); }
 
