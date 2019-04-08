@@ -18,6 +18,14 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 	projectile.addGroup(Game::groupProjectiles);
 }
 
+void AssetManager::CreateDroppedItem(Vector2D pos, std::string id) {
+	auto& testDrop(manager->addEntity());
+	testDrop.addComponent<TransformComponent>(pos.x, pos.y, 32, 32, 1);
+	testDrop.addComponent<SpriteComponent>(id, false);
+	testDrop.addComponent<ColliderComponent>("projectile");
+	testDrop.addGroup(Game::groupDroppedItems);
+}
+
 void AssetManager::AddTexture(std::string id, const char* path) {
 	textures.emplace(id, TextureManager::LoadTexture(path));
 }
