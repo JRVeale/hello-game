@@ -22,7 +22,7 @@ void AssetManager::CreateDroppedItem(Vector2D pos, std::string id) {
 	auto& testDrop(manager->addEntity());
 	testDrop.addComponent<TransformComponent>(pos.x, pos.y, 32, 32, 1);
 	testDrop.addComponent<SpriteComponent>(id, false);
-	testDrop.addComponent<ColliderComponent>("projectile");
+	testDrop.addComponent<ColliderComponent>("droppedItem");
 	testDrop.addGroup(Game::groupDroppedItems);
 }
 
