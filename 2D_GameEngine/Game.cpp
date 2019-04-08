@@ -63,20 +63,20 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addComponent<InventoryComponent>(10);
 	player.addGroup(groupPlayers);
 
-	/*//Examples
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(600, 600), "testItem");
-	assets->CreateDroppedItem(Vector2D(500, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(600, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(300, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(270, 200), "testItem");
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	assets->CreateDroppedItem(Vector2D(60, 60), "testItem");
-	*/
+	//Examples
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(600, 600), "projectile");
+	assets->CreateDroppedItem(Vector2D(500, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(600, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(300, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(270, 200), "projectile");
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	assets->CreateDroppedItem(Vector2D(60, 60), "projectile");
+	
 
 	/*//Examples
 	assets->CreateProjectile(Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
@@ -135,6 +135,9 @@ void Game::update() {
 		if (Collision::AABB(iCol, playerCol)) {
 			if (player.getComponent<InventoryComponent>().addItem(i)) {
 				std::cout << "Player picked up dropped item!" << std::endl;
+				//Testing item dropping
+				player.getComponent<InventoryComponent>().dropItem(i,Vector2D(111,0));
+				std::cout << "Player dropped item!" << std::endl;
 			}
 			else {
 				std::cout << "Player inventory full!" << std::endl;
