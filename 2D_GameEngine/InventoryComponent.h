@@ -28,17 +28,18 @@ private:
 public:
 	InventoryComponent(int s){
 		slots = s;
+		slotsFilled = 0;
 	}
 
 	InventoryComponent(int s, std::list<Entity*> i) {
 		slots = s;
 		heldItems = i;
-
+		slotsFilled = getSlotsNeeded(i);
 	}
 
 	void init() override {}
 	void update() override {
-		/*TODO: Should we update items' transform to match container?*/
+		/*TODO: Should we update items' transform.pos to match container?*/
 	}
 
 	void draw() override {
@@ -55,7 +56,12 @@ public:
 		if (slotsFilled >= slots && !couldStack(e)) {
 			return false;
 		}
+		e->delGroup(Game::groupDroppedItems);	//doesn't matter if didnt have group...
 		heldItems.push_back(e);
+		slotsFilled++;	//replace with adding to stack if needed
+		/*There's definitely a much better way of doing stacking though...
+		I don't need to track every individual apple until it ceases to exist,
+		I could probably tokenise them for inventoryisation and recreate them when needed?*/
 		/*TODO: Should we remove components from entity (i.e. transform)
 		when they're held in an inventory?*/
 		return true;
