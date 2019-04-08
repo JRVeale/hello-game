@@ -89,7 +89,7 @@
     <ClInclude Include="ProjectileComponent.h">
       <Filter>Source Files\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="InvenoryComponent.h">
+    <ClInclude Include="InventoryComponent.h">
       <Filter>Source Files\ECS</Filter>
     </ClInclude>
   </ItemGroup>
