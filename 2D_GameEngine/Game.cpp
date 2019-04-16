@@ -60,6 +60,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addComponent<SpriteComponent>("player",true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
+	player.addComponent<StatusComponent>(100);
+	/*StatusArray playermults;
+	playermults.fill(1);
+	playermults[none] = 0.5;
+	player.getComponent<StatusComponent>().multipliers = playermults;*/
 	player.addGroup(groupPlayers);
 
 	/*//Examples
@@ -101,6 +106,8 @@ void Game::update() {
 		if (Collision::AABB(cCol, playerCol)) {
 			//if collided this turn, move back to the pos was in before update()
 			player.getComponent<TransformComponent>().position = playerPos;
+			//player.getComponent<StatusComponent>().damage(1);
+			//std::cout << player.getComponent<StatusComponent>().health << std::endl;
 		}
 	}
 
