@@ -47,6 +47,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 		isRunning = true;
 	}
 
+	//Initialise SDL_mixer
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		//2048 (2MB) should be fine, may have to fiddle with to avoid lag
+		std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+	}
+
 	assets->AddTexture("terrain", "assets/terrain_ss.png");
 	assets->AddTexture("player", "assets/player_anims.png");
 	assets->AddTexture("projectile", "assets/proj.png");
