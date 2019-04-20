@@ -57,6 +57,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	assets->AddTexture("player", "assets/player_anims.png");
 	assets->AddTexture("projectile", "assets/proj.png");
 
+	assets->AddSound("test_thud", "assets/332668__reitanna__big-thud2.wav");
+
 	map = new Map("terrain", 3, 32);
 
 	map->LoadMap("assets/map.map", 10, 10);
@@ -67,13 +69,18 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addComponent<StatusComponent>(100);
-	/*StatusArray playermults;
-	playermults.fill(1);
-	playermults[none] = 0.5;
-	player.getComponent<StatusComponent>().multipliers = playermults;*/
+	player.addComponent<AudioComponent>();
+	player.getComponent<AudioComponent>().addSound("test_thud","thud");
 	player.addGroup(groupPlayers);
 
-	/*//Examples
+	//AmbientExamples
+	auto& ambient(manager.addEntity());
+	ambient.addComponent<TransformComponent>(0.0f, 0.0f);
+	ambient.addComponent<AudioComponent>();
+	ambient.getComponent<AudioComponent>().addSound("test_thud", "ambient");
+	ambient.addGroup(groupAmbientSounds);
+
+	/*//ProjectileExamples
 	assets->CreateProjectile(Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
 	assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, "projectile");
 	assets->CreateProjectile(Vector2D(400, 600), Vector2D(2, 1), 200, 2, "projectile");
@@ -84,6 +91,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
+auto& ambient_sounds(manager.getGroup(Game::groupAmbientSounds));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
 
 void Game::handleEvents() {
@@ -112,8 +120,18 @@ void Game::update() {
 		if (Collision::AABB(cCol, playerCol)) {
 			//if collided this turn, move back to the pos was in before update()
 			player.getComponent<TransformComponent>().position = playerPos;
-			//player.getComponent<StatusComponent>().damage(1);
+			player.getComponent<AudioComponent>().PlaySound("thud", MIX_MAX_VOLUME / 2);
+			//Mix_PlayChannel(-1, assets->GetSound("test_thud"), 0);
 			//std::cout << player.getComponent<StatusComponent>().health << std::endl;
+		}
+	}
+
+	for (auto& a : ambient_sounds) {
+		float distance = a->getComponent<TransformComponent>().getVectorTo(playerPos).length();
+		if (distance < 1000) {
+			std::cout << "Playing ambient: distance is " << distance << std::endl;
+			//TODO add a max distance inside the audio component!
+			a->getComponent<AudioComponent>().PlaySound("ambient", MIX_MAX_VOLUME, distance);
 		}
 	}
 

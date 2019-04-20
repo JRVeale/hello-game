@@ -32,6 +32,7 @@ public:
 		groupMap,
 		groupPlayers,
 		groupColliders,
+		groupAmbientSounds,
 		groupProjectiles
 	};
 

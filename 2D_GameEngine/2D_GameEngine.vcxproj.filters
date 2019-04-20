@@ -92,6 +92,9 @@
     <ClInclude Include="StatusComponent.h">
       <Filter>Source Files\ECS</Filter>
     </ClInclude>
+    <ClInclude Include="AudioComponent.h">
+      <Filter>Source Files\ECS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\player.png">
