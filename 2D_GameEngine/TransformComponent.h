@@ -51,4 +51,8 @@ public:
 		position.x += velocity.x * speed;
 		position.y += velocity.y * speed;
 	}
+
+	Vector2D getVectorTo(Vector2D point) {
+		return point - position;
+	}
 };
