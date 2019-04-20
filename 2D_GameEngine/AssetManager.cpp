@@ -27,7 +27,7 @@ SDL_Texture* AssetManager::GetTexture(std::string id) {
 	return textures[id];
 }
 
-//music management
+/*//music management
 void AssetManager::AddMusic(std::string id, const char* path) {
 	musics.emplace(id, Mix_LoadMUS(path));
 	if (musics[id] == NULL) {
@@ -37,9 +37,9 @@ void AssetManager::AddMusic(std::string id, const char* path) {
 
 Mix_Music* AssetManager::GetMusic(std::string id) {
 	return musics[id];
-}
+}*/
 
-//sounds management
+//sound management
 void AssetManager::AddSound(std::string id, const char* path) {
 	sounds.emplace(id, Mix_LoadWAV(path));
 	if (sounds[id] == NULL) {

@@ -18,9 +18,9 @@ public:
 	void AddTexture(std::string id, const char* path);
 	SDL_Texture* GetTexture(std::string id);
 
-	//music management
+	/*//music management
 	void AddMusic(std::string id, const char* path);
-	Mix_Music* GetMusic(std::string id);
+	Mix_Music* GetMusic(std::string id);*/
 
 	//sounds management
 	void AddSound(std::string id, const char* path);
