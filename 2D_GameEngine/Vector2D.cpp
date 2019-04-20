@@ -29,6 +29,11 @@ Vector2D& Vector2D::Subtract(const Vector2D& vec) {
 	return *this;
 }
 
+float Vector2D::length() {
+	float squared_length = pow(x, 2) + pow(y, 2);
+	return sqrtf(squared_length);
+}
+
 Vector2D& operator+(Vector2D& v1, const Vector2D& v2) {
 	return v1.Add(v2);
 }
