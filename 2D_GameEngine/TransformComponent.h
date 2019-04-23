@@ -33,9 +33,20 @@ public:
 		position.y = y;
 	}
 
+	TransformComponent(Vector2D pos) {
+		position = pos;
+	}
+
 	TransformComponent(float x, float y, int w, int h, int sc) {
 		position.x = x;
 		position.y = y;
+		width = w;
+		height = h;
+		scale = sc;
+	}
+
+	TransformComponent(Vector2D pos, int w, int h, int sc) {
+		position = pos;
 		width = w;
 		height = h;
 		scale = sc;
