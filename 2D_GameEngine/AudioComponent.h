@@ -37,12 +37,15 @@ public:
 					int baseVolume = MIX_MAX_VOLUME, float distance = 0) {
 		//Get Sound
 		Mix_Chunk* sound = sounds[soundName];
-		//Calc & set volume
+		//Calc volume
 		unsigned int volume = CalcVolume(baseVolume, distance);
 		std::cout << "volume: " << volume << std::endl;
-		Mix_VolumeChunk(sound, volume);
-		//Play sound
-		Mix_PlayChannel(-1, sound, 0);
+		if (volume > 0) {
+			//Set volume
+			Mix_VolumeChunk(sound, volume);
+			//Play sound
+			Mix_PlayChannel(-1, sound, 0);
+		}
 	}
 
 	/*void addMusic(std::string id) {
