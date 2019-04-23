@@ -43,7 +43,7 @@ public:
 
 	}
 
-	int PlaySound(std::string soundName,
+	void PlaySound(std::string soundName,
 					int baseVolume = MIX_MAX_VOLUME, float distance = 0) {
 		//Check if already playing...
 		int current_ch = soundEffects[soundName].current_channel;
@@ -53,7 +53,7 @@ public:
 			if (Mix_Playing(current_ch) != 0) {
 				//Still playing
 				//Return -(channel currently playing on)
-				return -current_ch;
+				return;
 			}
 			else {
 				//Finished playing
