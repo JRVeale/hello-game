@@ -52,6 +52,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 		//2048 (2MB) should be fine, may have to fiddle with to avoid lag
 		std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
 	}
+	Mix_AllocateChannels(64);
+	std::cout << "Initialised with " << Mix_AllocateChannels(-1) << " audio mixing channels" << std::endl;
+	
 
 	assets->AddTexture("terrain", "assets/terrain_ss.png");
 	assets->AddTexture("player", "assets/player_anims.png");
@@ -70,15 +73,12 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addComponent<ColliderComponent>("player");
 	player.addComponent<StatusComponent>(100);
 	player.addComponent<AudioComponent>();
-	player.getComponent<AudioComponent>().addSound("test_thud","thud");
+	player.getComponent<AudioComponent>().addSoundEffect("test_thud","thud");
 	player.addGroup(groupPlayers);
 
 	//AmbientExamples
-	auto& ambient(manager.addEntity());
-	ambient.addComponent<TransformComponent>(0.0f, 0.0f);
-	ambient.addComponent<AudioComponent>();
-	ambient.getComponent<AudioComponent>().addSound("test_thud", "ambient");
-	ambient.addGroup(groupAmbientSounds);
+	assets->CreateAmbientSoundEffect(Vector2D(0.0f, 0.0f), "test_thud", "ambient");
+	assets->CreateAmbientSoundEffect(Vector2D(1200.0f, 0.0f), "test_thud", "ambient");
 
 	/*//ProjectileExamples
 	assets->CreateProjectile(Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
@@ -129,7 +129,7 @@ void Game::update() {
 	for (auto& a : ambient_sounds) {
 		float distance = a->getComponent<TransformComponent>().getVectorTo(playerPos).length();
 		if (distance < 1000) {
-			std::cout << "Playing ambient: distance is " << distance << std::endl;
+			//std::cout << "Playing ambient: distance is " << distance << std::endl;
 			//TODO add a max distance inside the audio component!
 			a->getComponent<AudioComponent>().PlaySound("ambient", MIX_MAX_VOLUME, distance);
 		}
