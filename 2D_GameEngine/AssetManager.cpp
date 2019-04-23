@@ -18,6 +18,15 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 	projectile.addGroup(Game::groupProjectiles);
 }
 
+
+void AssetManager::CreateAmbientSoundEffect(Vector2D pos, std::string asset_id, std::string local_id ) {
+	auto& ambient(manager->addEntity());
+	ambient.addComponent<TransformComponent>(pos);
+	ambient.addComponent<AudioComponent>();
+	ambient.getComponent<AudioComponent>().addSoundEffect(asset_id, local_id);
+	ambient.addGroup(Game::groupAmbientSounds);
+}
+
 //texture management
 void AssetManager::AddTexture(std::string id, const char* path) {
 	textures.emplace(id, TextureManager::LoadTexture(path));
