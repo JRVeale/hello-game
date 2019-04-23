@@ -4,9 +4,15 @@
 #include "AssetManager.h"
 #include <algorithm>
 
+struct SoundEffect {
+	Mix_Chunk* sound = NULL;
+	int current_channel = -1;
+};
+
 class AudioComponent : public Component {
 private:
 	TransformComponent* transform;
+
 	unsigned int CalcVolume(int baseVolume = MIX_MAX_VOLUME, float distance = 0) {
 		unsigned int volume = baseVolume; //&min is zero
 		if (distance != 0 && volume != 0) {
@@ -18,34 +24,57 @@ private:
 		}
 		return volume;
 	}
+
 public:
 	//std::map<const char*, Mix_Music> musics;
-	std::map<std::string, Mix_Chunk*> sounds;
+	std::map<std::string, SoundEffect> soundEffects;
 
 	AudioComponent() = default;
 	~AudioComponent() {}
 
-	void addSound(std::string asset_id, std::string local_id = "") {
+	void addSoundEffect(std::string asset_id, std::string local_id = "") {
 		std::string id = local_id;
 		if (id.compare("") == 0) {
 			id = asset_id;
 		}
-		sounds.emplace(id, Game::assets->GetSound(asset_id));
+		Mix_Chunk* p_sound = Game::assets->GetSound(asset_id);
+		SoundEffect s_effect = { p_sound, -1 };
+		soundEffects.emplace(id, s_effect);
+
 	}
 
-	void PlaySound(std::string soundName,
+	int PlaySound(std::string soundName,
 					int baseVolume = MIX_MAX_VOLUME, float distance = 0) {
+		//Check if already playing...
+		int current_ch = soundEffects[soundName].current_channel;
+		if (current_ch != -1) {
+			//Should already be playing
+			//Check still is playing
+			if (Mix_Playing(current_ch) != 0) {
+				//Still playing
+				//Return -(channel currently playing on)
+				return -current_ch;
+			}
+			else {
+				//Finished playing
+				//Set current_channel back to -1 to show free
+				soundEffects[soundName].current_channel = -1;
+			}
+		}
+		//Not already playing, go ahead!
 		//Get Sound
-		Mix_Chunk* sound = sounds[soundName];
+		Mix_Chunk* sound = soundEffects[soundName].sound;
 		//Calc volume
 		unsigned int volume = CalcVolume(baseVolume, distance);
-		std::cout << "volume: " << volume << std::endl;
+		std::cout << "volume: " << volume;
 		if (volume > 0) {
 			//Set volume
 			Mix_VolumeChunk(sound, volume);
-			//Play sound
-			Mix_PlayChannel(-1, sound, 0);
+			//Play sound (& set the current_channel flag for the soundEffect
+			soundEffects[soundName].current_channel = Mix_PlayChannel(-1, sound, 0);
+			std::cout << " played on channel " << soundEffects[soundName].current_channel;
 		}
+		std::cout << std::endl;
 	}
 
 	/*void addMusic(std::string id) {
@@ -70,6 +99,19 @@ public:
 	}
 
 	void update() override {
-
+		//Update soundEffects' current_channels if they've finished playing..
+		/*This should deal with channels not being 'freed' in SoundEffect,
+			and leading to them blocking eachother in PlaySound*/
+		//Unless threading allows sound to finish while update() is occuring...
+		for (auto& sf : soundEffects) {
+			int current_ch = sf.second.current_channel;
+			if (current_ch != -1) {
+				if (Mix_Playing(current_ch) == 0) {
+					//Has finished playing
+					//(and hasn't yet been recognised by a repeated call to PlaySound)
+					sf.second.current_channel = -1;
+				}
+			}
+		}
 	}
 };
