@@ -9,3 +9,4 @@
 #include "TileComponent.h"
 #include "ProjectileComponent.h"
 #include "StatusComponent.h"
+#include "AudioComponent.h"

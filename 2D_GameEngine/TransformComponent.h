@@ -33,9 +33,20 @@ public:
 		position.y = y;
 	}
 
+	TransformComponent(Vector2D pos) {
+		position = pos;
+	}
+
 	TransformComponent(float x, float y, int w, int h, int sc) {
 		position.x = x;
 		position.y = y;
+		width = w;
+		height = h;
+		scale = sc;
+	}
+
+	TransformComponent(Vector2D pos, int w, int h, int sc) {
+		position = pos;
 		width = w;
 		height = h;
 		scale = sc;
@@ -50,5 +61,9 @@ public:
 		//back in as scrolling now dealt with by camera
 		position.x += velocity.x * speed;
 		position.y += velocity.y * speed;
+	}
+
+	Vector2D getVectorTo(Vector2D point) {
+		return point - position;
 	}
 };

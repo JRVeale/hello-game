@@ -13,13 +13,25 @@ public:
 
 	//game objects
 	void CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, std::string id);
+	void CreateAmbientSoundEffect(Vector2D pos, std::string asset_id, std::string local_id = "");
 
 	//texture management
 	void AddTexture(std::string id, const char* path);
 	SDL_Texture* GetTexture(std::string id);
 
+	/*//music management
+	void AddMusic(std::string id, const char* path);
+	Mix_Music* GetMusic(std::string id);*/
+
+	//sounds management
+	void AddSound(std::string id, const char* path);
+	Mix_Chunk* GetSound(std::string id);
+
+
 private:
 
 	Manager* manager;
 	std::map<std::string, SDL_Texture*> textures;
+	std::map<std::string, Mix_Music*> musics;
+	std::map<std::string, Mix_Chunk*> sounds;
 };

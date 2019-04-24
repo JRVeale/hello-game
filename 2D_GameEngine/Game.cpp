@@ -47,9 +47,22 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 		isRunning = true;
 	}
 
+	//Initialise SDL_mixer
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		//2048 (2MB) should be fine, may have to fiddle with to avoid lag
+		std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+	}
+	Mix_AllocateChannels(64);
+	std::cout << "Initialised with " << Mix_AllocateChannels(-1) << " audio mixing channels" << std::endl;
+	
+
 	assets->AddTexture("terrain", "assets/terrain_ss.png");
 	assets->AddTexture("player", "assets/player_anims.png");
 	assets->AddTexture("projectile", "assets/proj.png");
+
+	assets->AddSound("missing_sound", "assets/101355__timbre__remix-of-54047-guitarguy1985-buzzer-variants-3.wav");
+	assets->AddSound("test_thud", "assets/332668__reitanna__big-thud2.wav");
+	
 
 	map = new Map("terrain", 3, 32);
 
@@ -61,13 +74,15 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addComponent<StatusComponent>(100);
-	/*StatusArray playermults;
-	playermults.fill(1);
-	playermults[none] = 0.5;
-	player.getComponent<StatusComponent>().multipliers = playermults;*/
+	player.addComponent<AudioComponent>();
+	player.getComponent<AudioComponent>().addSoundEffect("test_thud","thud");
 	player.addGroup(groupPlayers);
 
-	/*//Examples
+	//AmbientExamples
+	assets->CreateAmbientSoundEffect(Vector2D(0.0f, 0.0f), "test_thud", "ambient");
+	assets->CreateAmbientSoundEffect(Vector2D(1200.0f, 0.0f), "test_thud", "ambient");
+
+	/*//ProjectileExamples
 	assets->CreateProjectile(Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
 	assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, "projectile");
 	assets->CreateProjectile(Vector2D(400, 600), Vector2D(2, 1), 200, 2, "projectile");
@@ -78,6 +93,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
 auto& colliders(manager.getGroup(Game::groupColliders));
+auto& ambient_sounds(manager.getGroup(Game::groupAmbientSounds));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
 
 void Game::handleEvents() {
@@ -106,8 +122,18 @@ void Game::update() {
 		if (Collision::AABB(cCol, playerCol)) {
 			//if collided this turn, move back to the pos was in before update()
 			player.getComponent<TransformComponent>().position = playerPos;
-			//player.getComponent<StatusComponent>().damage(1);
+			player.getComponent<AudioComponent>().PlaySound("thud", MIX_MAX_VOLUME / 2);
+			//Mix_PlayChannel(-1, assets->GetSound("test_thud"), 0);
 			//std::cout << player.getComponent<StatusComponent>().health << std::endl;
+		}
+	}
+
+	for (auto& a : ambient_sounds) {
+		float distance = a->getComponent<TransformComponent>().getVectorTo(playerPos).length();
+		if (distance < 1000) {
+			//std::cout << "Playing ambient: distance is " << distance << std::endl;
+			//TODO add a max distance inside the audio component!
+			a->getComponent<AudioComponent>().PlaySound("ambient", MIX_MAX_VOLUME, distance);
 		}
 	}
 
