@@ -53,7 +53,7 @@ public:
 		//Check if exists...
 		if (soundEffects.count(id) != 1) {
 			//There is no sound effect with this id in this AudioComponent
-			std::cout << "[Entitity name here] does not have a sound effect with the ID " << id << std::endl;
+			std::cout << entity->name << " does not have a SoundEffect with the ID " << id << std::endl;
 			id = "missing_sound";
 		}
 		

@@ -45,7 +45,7 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY){
 		for (int x = 0; x < sizeX; x++) {
 			mapFile.get(c);
 			if (c == '1') {
-				auto& tcol(manager.addEntity());
+				auto& tcol(manager.addEntity("map_collider"));
 				tcol.addComponent<ColliderComponent>("terrain",
 														x * scaledSize,
 														y * scaledSize,
@@ -61,7 +61,7 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY){
 }
 
 void Map::AddTile(int srcX, int srcY, int xpos, int ypos) {
-	auto& tile(manager.addEntity());
+	auto& tile(manager.addEntity("map_tile"));
 	tile.addComponent<TileComponent>(srcX, srcY,
 										xpos, ypos,
 										tileSize, mapScale,

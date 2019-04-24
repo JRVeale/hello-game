@@ -60,6 +60,7 @@ private:
 
 public:
 	Entity(Manager& mManager) : manager(mManager){}
+	std::string name;
 	void update() {
 		//loop through all its components and update them
 		for (auto& c : components) c->update();
@@ -148,8 +149,9 @@ public:
 		return groupedEntities[mGroup];	//the vector of entities in that group
 	}
 
-	Entity& addEntity() {
+	Entity& addEntity(std::string entity_name) {
 		Entity* e = new Entity(*this);
+		e->name = entity_name;
 		std::unique_ptr<Entity> uPtr{ e };
 		entities.emplace_back(std::move(uPtr));
 		return *e;
