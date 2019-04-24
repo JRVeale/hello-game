@@ -57,6 +57,8 @@ public:
 			id = "missing_sound";
 		}
 		
+		bool already_playing = false;
+
 		//Check if already playing...
 		int current_ch = soundEffects[id].current_channel;
 		if (current_ch != -1) {
@@ -65,7 +67,7 @@ public:
 			if (Mix_Playing(current_ch) != 0) {
 				//Still playing
 				//Return -(channel currently playing on)
-				return;
+				already_playing = true;
 			}
 			else {
 				//Finished playing
@@ -78,15 +80,17 @@ public:
 		Mix_Chunk* sound = soundEffects[id].sound;
 		//Calc volume
 		unsigned int volume = CalcVolume(baseVolume, distance);
-		std::cout << "volume: " << volume;
+		//std::cout << "volume: " << volume;
 		if (volume > 0) {
 			//Set volume
 			Mix_VolumeChunk(sound, volume);
-			//Play sound (& set the current_channel flag for the soundEffect
-			soundEffects[id].current_channel = Mix_PlayChannel(-1, sound, 0);
-			std::cout << " played on channel " << soundEffects[id].current_channel;
+			//May want to only do above if volume different from previous... to save resources
+			if (!already_playing) {
+				//Play sound (& set the current_channel flag for the soundEffect
+				soundEffects[id].current_channel = Mix_PlayChannel(-1, sound, 0);
+				std::cout << entity->name << "'s " << id << " playing on channel " << soundEffects[id].current_channel << " starting at volume " << volume << std::endl;
+			}
 		}
-		std::cout << std::endl;
 	}
 
 	/*void addMusic(std::string id) {
