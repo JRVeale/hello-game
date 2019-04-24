@@ -9,8 +9,8 @@ AssetManager::~AssetManager() {
 
 }
 
-void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, std::string id) {
-	auto& projectile(manager->addEntity());
+void AssetManager::CreateProjectile(std::string name, Vector2D pos, Vector2D vel, int range, int speed, std::string id) {
+	auto& projectile(manager->addEntity(name));
 	projectile.addComponent<TransformComponent>(pos.x, pos.y, 32, 32, 1); //TODO more automatic size and scale
 	projectile.addComponent<SpriteComponent>(id, false);
 	projectile.addComponent<ProjectileComponent>(range, speed, vel);
@@ -19,8 +19,8 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int s
 }
 
 
-void AssetManager::CreateAmbientSoundEffect(Vector2D pos, std::string asset_id, std::string local_id ) {
-	auto& ambient(manager->addEntity());
+void AssetManager::CreateAmbientSoundEffect(std::string name, Vector2D pos, std::string asset_id, std::string local_id ) {
+	auto& ambient(manager->addEntity(name));
 	ambient.addComponent<TransformComponent>(pos);
 	ambient.addComponent<AudioComponent>();
 	ambient.getComponent<AudioComponent>().addSoundEffect(asset_id, local_id);

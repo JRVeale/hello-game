@@ -20,7 +20,7 @@ AssetManager* Game::assets = new AssetManager(&manager);
 bool Game::isRunning = false;
 
 //create a player
-auto& player(manager.addEntity());
+auto& player(manager.addEntity("player"));
 
 Game::Game() {
 
@@ -62,6 +62,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 
 	assets->AddSound("missing_sound", "assets/101355__timbre__remix-of-54047-guitarguy1985-buzzer-variants-3.wav");
 	assets->AddSound("test_thud", "assets/332668__reitanna__big-thud2.wav");
+	assets->AddSound("bamboo_woosh", "assets/394423__inspectorj__bamboo-swing-c8.wav");
 	
 
 	map = new Map("terrain", 3, 32);
@@ -79,14 +80,14 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.addGroup(groupPlayers);
 
 	//AmbientExamples
-	assets->CreateAmbientSoundEffect(Vector2D(0.0f, 0.0f), "test_thud", "ambient");
-	assets->CreateAmbientSoundEffect(Vector2D(1200.0f, 0.0f), "test_thud", "ambient");
+	assets->CreateAmbientSoundEffect("test_ambient_top_left", Vector2D(0.0f, 0.0f), "bamboo_woosh", "ambient");
+	assets->CreateAmbientSoundEffect("test_ambient_top_right", Vector2D(1200.0f, 0.0f), "bamboo_woosh", "ambient");
 
 	/*//ProjectileExamples
-	assets->CreateProjectile(Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
-	assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, "projectile");
-	assets->CreateProjectile(Vector2D(400, 600), Vector2D(2, 1), 200, 2, "projectile");
-	assets->CreateProjectile(Vector2D(600, 600), Vector2D(2, -1), 200, 2, "projectile");
+	assets->CreateProjectile("test_projectile_1", Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
+	assets->CreateProjectile("test_projectile_1", Vector2D(600, 620), Vector2D(2, 0), 200, 2, "projectile");
+	assets->CreateProjectile("test_projectile_1", Vector2D(400, 600), Vector2D(2, 1), 200, 2, "projectile");
+	assets->CreateProjectile("test_projectile_1", Vector2D(600, 600), Vector2D(2, -1), 200, 2, "projectile");
 	*/
 }
 

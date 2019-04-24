@@ -12,8 +12,8 @@ public:
 	~AssetManager();
 
 	//game objects
-	void CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, std::string id);
-	void CreateAmbientSoundEffect(Vector2D pos, std::string asset_id, std::string local_id = "");
+	void CreateProjectile(std::string name, Vector2D pos, Vector2D vel, int range, int speed, std::string id);
+	void CreateAmbientSoundEffect(std::string name, Vector2D pos, std::string asset_id, std::string local_id = "");
 
 	//texture management
 	void AddTexture(std::string id, const char* path);
