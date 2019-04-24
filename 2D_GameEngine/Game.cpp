@@ -60,7 +60,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	assets->AddTexture("player", "assets/player_anims.png");
 	assets->AddTexture("projectile", "assets/proj.png");
 
+	assets->AddSound("missing_sound", "assets/101355__timbre__remix-of-54047-guitarguy1985-buzzer-variants-3.wav");
 	assets->AddSound("test_thud", "assets/332668__reitanna__big-thud2.wav");
+	
 
 	map = new Map("terrain", 3, 32);
 

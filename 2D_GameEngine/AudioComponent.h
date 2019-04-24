@@ -29,7 +29,9 @@ public:
 	//std::map<const char*, Mix_Music> musics;
 	std::map<std::string, SoundEffect> soundEffects;
 
-	AudioComponent() = default;
+	AudioComponent() {
+		addSoundEffect("missing_sound");
+	}
 	~AudioComponent() {}
 
 	void addSoundEffect(std::string asset_id, std::string local_id = "") {
@@ -45,8 +47,18 @@ public:
 
 	void PlaySound(std::string soundName,
 					int baseVolume = MIX_MAX_VOLUME, float distance = 0) {
+		
+		std::string id = soundName;
+		
+		//Check if exists...
+		if (soundEffects.count(id) != 1) {
+			//There is no sound effect with this id in this AudioComponent
+			std::cout << "[Entitity name here] does not have a sound effect with the ID " << id << std::endl;
+			id = "missing_sound";
+		}
+		
 		//Check if already playing...
-		int current_ch = soundEffects[soundName].current_channel;
+		int current_ch = soundEffects[id].current_channel;
 		if (current_ch != -1) {
 			//Should already be playing
 			//Check still is playing
@@ -58,12 +70,12 @@ public:
 			else {
 				//Finished playing
 				//Set current_channel back to -1 to show free
-				soundEffects[soundName].current_channel = -1;
+				soundEffects[id].current_channel = -1;
 			}
 		}
 		//Not already playing, go ahead!
 		//Get Sound
-		Mix_Chunk* sound = soundEffects[soundName].sound;
+		Mix_Chunk* sound = soundEffects[id].sound;
 		//Calc volume
 		unsigned int volume = CalcVolume(baseVolume, distance);
 		std::cout << "volume: " << volume;
@@ -71,8 +83,8 @@ public:
 			//Set volume
 			Mix_VolumeChunk(sound, volume);
 			//Play sound (& set the current_channel flag for the soundEffect
-			soundEffects[soundName].current_channel = Mix_PlayChannel(-1, sound, 0);
-			std::cout << " played on channel " << soundEffects[soundName].current_channel;
+			soundEffects[id].current_channel = Mix_PlayChannel(-1, sound, 0);
+			std::cout << " played on channel " << soundEffects[id].current_channel;
 		}
 		std::cout << std::endl;
 	}
