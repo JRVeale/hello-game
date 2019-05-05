@@ -9,12 +9,13 @@ AssetManager::~AssetManager() {
 
 }
 
-void AssetManager::CreateProjectile(std::string name, Vector2D pos, Vector2D vel, int range, int speed, std::string id) {
+void AssetManager::CreateProjectile(std::string name, Vector2D pos, Vector2D vel, int range, int speed, std::string id, Entity* owner) {
 	auto& projectile(manager->addEntity(name));
 	projectile.addComponent<TransformComponent>(pos.x, pos.y, 32, 32, 1); //TODO more automatic size and scale
 	projectile.addComponent<SpriteComponent>(id, false);
 	projectile.addComponent<ProjectileComponent>(range, speed, vel);
 	projectile.addComponent<ColliderComponent>("projectile");
+	projectile.addComponent<OwnerComponent>(owner);
 	projectile.addGroup(Game::groupProjectiles);
 }
 

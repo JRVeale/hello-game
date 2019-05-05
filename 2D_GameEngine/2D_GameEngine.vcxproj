@@ -150,6 +150,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="OwnerComponent.h" />
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="StatusComponent.h" />
     <ClInclude Include="TileComponent.h" />
