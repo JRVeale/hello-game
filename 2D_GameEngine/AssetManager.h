@@ -14,6 +14,8 @@ public:
 	//game objects
 	void CreateProjectile(std::string name, Vector2D pos, Vector2D vel, int range, int speed, std::string id, Entity* owner);
 	void CreateAmbientSoundEffect(std::string name, Vector2D pos, std::string asset_id, std::string local_id = "");
+	void CreateEnemy(std::string name, Vector2D pos, int health);
+
 
 	//texture management
 	void AddTexture(std::string id, const char* path);

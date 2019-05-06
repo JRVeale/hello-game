@@ -28,6 +28,15 @@ void AssetManager::CreateAmbientSoundEffect(std::string name, Vector2D pos, std:
 	ambient.addGroup(Game::groupAmbientSounds);
 }
 
+void AssetManager::CreateEnemy(std::string name, Vector2D pos, int health) {
+	auto& enemy(manager->addEntity(name));
+	enemy.addComponent<TransformComponent>(pos, 32, 32, 2);
+	enemy.addComponent<SpriteComponent>("enemy");
+	enemy.addComponent<StatusComponent>(100);
+	enemy.addComponent<ColliderComponent>("enemy");
+	enemy.addGroup(Game::groupEnemies);
+}
+
 //texture management
 void AssetManager::AddTexture(std::string id, const char* path) {
 	textures.emplace(id, TextureManager::LoadTexture(path));
