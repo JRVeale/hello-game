@@ -10,7 +10,7 @@ class TransformComponent : public Component {
 public:
 
 	Vector2D position;
-	Vector2D velocity;
+	Vector2D relative_velocity;
 
 	int height = 32;
 	int width = 32;
@@ -53,14 +53,14 @@ public:
 	}
 
 	void init() override {
-		velocity.Zero();
+		relative_velocity.Zero();
 	}
 
 	void update() override {
 		
 		//back in as scrolling now dealt with by camera
-		position.x += velocity.x * speed;
-		position.y += velocity.y * speed;
+		position.x += relative_velocity.x * speed;
+		position.y += relative_velocity.y * speed;
 
 	}
 

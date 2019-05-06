@@ -19,11 +19,13 @@ Vector2D& Vector2D::Subtract(const Vector2D& vec) {
 	this->x -= vec.x;
 	this->y -= vec.y;
 	return *this;
-}Vector2D& Vector2D::Multiply(const Vector2D& vec) {
+}
+Vector2D& Vector2D::Multiply(const Vector2D& vec) {
 	this->x *= vec.x;
 	this->y *= vec.y;
 	return *this;
-}Vector2D& Vector2D::Divide(const Vector2D& vec) {
+}
+Vector2D& Vector2D::Divide(const Vector2D& vec) {
 	this->x /= vec.x;
 	this->y /= vec.y;
 	return *this;

@@ -14,7 +14,7 @@ public:
 
 	void init() override {
 		transform = &entity->getComponent<TransformComponent>();
-		transform->velocity = velocity;
+		transform->relative_velocity = velocity;
 	}
 
 	void update() override {
