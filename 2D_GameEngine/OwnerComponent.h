@@ -33,13 +33,7 @@ public:
 
 	void update() override {
 		if (entity->hasComponent<TransformComponent>() && isHeld) {
-			/*std::cout << "owner is " << owner->name
-				<< " " << owner->getComponent<TransformComponent>().position
-				<< std::endl;*/
-			entity->getComponent<TransformComponent>().position.x
-				= owner->getComponent<TransformComponent>().position.x + heldOffset.x;
-			entity->getComponent<TransformComponent>().position.y
-				= owner->getComponent<TransformComponent>().position.y + heldOffset.y;
+			entity->getComponent<TransformComponent>().position = owner->getComponent<TransformComponent>().position + heldOffset;
 		}
 		//TODO: Probably better to do this inside transform component (considering will later have offset pos AND offset vel)
 		//TransformC can do motion as if it were not attached and then just add on owner transform if has owner and is held...
