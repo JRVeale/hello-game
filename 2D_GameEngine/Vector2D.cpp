@@ -35,16 +35,20 @@ float Vector2D::length() {
 }
 
 Vector2D& operator+(Vector2D& v1, const Vector2D& v2) {
-	return v1.Add(v2);
+	Vector2D vNew = v1;
+	return vNew.Add(v2);
 }
 Vector2D& operator-(Vector2D& v1, const Vector2D& v2) {
-	return v1.Subtract(v2);
+	Vector2D vNew = v1;
+	return vNew.Subtract(v2);
 }
 Vector2D& operator*(Vector2D& v1, const Vector2D& v2) {
-	return v1.Multiply(v2);
+	Vector2D vNew = v1;
+	return vNew.Multiply(v2);
 }
 Vector2D& operator/(Vector2D& v1, const Vector2D& v2) {
-	return v1.Divide(v2);
+	Vector2D vNew = v1;
+	return vNew.Divide(v2);
 }
 
 Vector2D& Vector2D::operator+=(const Vector2D& vec) {
