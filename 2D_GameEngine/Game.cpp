@@ -21,6 +21,7 @@ bool Game::isRunning = false;
 
 //create a player
 auto& player(manager.addEntity("player"));
+auto& sword(manager.addEntity("player_sword"));
 
 Game::Game() {
 
@@ -59,6 +60,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	assets->AddTexture("terrain", "assets/terrain_ss.png");
 	assets->AddTexture("player", "assets/player_anims.png");
 	assets->AddTexture("projectile", "assets/proj.png");
+	assets->AddTexture("enemy", "assets/player_anims.png");
 
 	assets->AddSound("missing_sound", "assets/101355__timbre__remix-of-54047-guitarguy1985-buzzer-variants-3.wav");
 	assets->AddSound("test_thud", "assets/332668__reitanna__big-thud2.wav");
@@ -70,7 +72,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	map->LoadMap("assets/map.map", 10, 10);
 	
 	//TODO: make a CreatePlayer() in AssetManager
-	player.addComponent<TransformComponent>(2);
+	player.addComponent<TransformComponent>(Vector2D(400,220),32,32,2);
 	player.addComponent<SpriteComponent>("player",true);
 	player.addComponent<KeyboardController>();
 	player.addComponent<ColliderComponent>("player");
@@ -79,9 +81,20 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.getComponent<AudioComponent>().addSoundEffect("test_thud","thud");
 	player.addGroup(groupPlayers);
 
-	//AmbientExamples
+	sword.addComponent<OwnerComponent>(&player, true, Vector2D(48,-16));
+	sword.addComponent<TransformComponent>(Vector2D(400,220),10,32,1);
+	sword.addComponent<SpriteComponent>("projectile");
+	sword.addComponent<ColliderComponent>("weapon");
+	sword.addGroup(groupWeapons);
+
+
+	//EnemyExamples
+	assets->CreateEnemy("enemy1", Vector2D(60, 60), 100);
+
+	/*//AmbientExamples
 	assets->CreateAmbientSoundEffect("test_ambient_top_left", Vector2D(0.0f, 0.0f), "bamboo_woosh", "ambient");
 	assets->CreateAmbientSoundEffect("test_ambient_top_right", Vector2D(1200.0f, 0.0f), "bamboo_woosh", "ambient");
+	*/
 
 	/*//ProjectileExamples
 	assets->CreateProjectile("test_projectile_1", Vector2D(60, 60), Vector2D(2, 0), 200, 2, "projectile");
@@ -93,9 +106,13 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 
 auto& tiles(manager.getGroup(Game::groupMap));
 auto& players(manager.getGroup(Game::groupPlayers));
+auto& weapons(manager.getGroup(Game::groupWeapons));
+auto& enemies(manager.getGroup(Game::groupEnemies));
 auto& colliders(manager.getGroup(Game::groupColliders));
 auto& ambient_sounds(manager.getGroup(Game::groupAmbientSounds));
 auto& projectiles(manager.getGroup(Game::groupProjectiles));
+
+//will the above need updating whenever a new entity is created and added to the group?
 
 void Game::handleEvents() {
 	
@@ -147,6 +164,15 @@ void Game::update() {
 		}
 	}
 
+	SDL_Rect swordCol = sword.getComponent<ColliderComponent>().collider;
+
+	for (auto& e : enemies) {
+		SDL_Rect eCol = e->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(eCol, swordCol)) {
+			std::cout << "I STAB AT THEE!" << std::endl;
+		}
+	}
+
 	//Replace these with window size variables (these are halved here)
 	camera.x = static_cast<int>(player.getComponent<TransformComponent>().position.x - 400);
 	camera.y = static_cast<int>(player.getComponent<TransformComponent>().position.y - 320);
@@ -172,7 +198,9 @@ void Game::render() {
 	//remove this to hide colliders (TODO: better to have a debug key though!)
 	for (auto& c : colliders) { c->draw(); } 
 	for (auto& p : players) { p->draw(); }
+	for (auto& w : weapons) { w->draw(); }
 	for (auto& p : projectiles) { p->draw(); }
+	for (auto& e : enemies) { e->draw(); }
 
 	SDL_RenderPresent(renderer);
 }
