@@ -81,8 +81,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	player.getComponent<AudioComponent>().addSoundEffect("test_thud","thud");
 	player.addGroup(groupPlayers);
 
-	sword.addComponent<OwnerComponent>(&player, true, Vector2D(48,-16));
-	sword.addComponent<TransformComponent>(Vector2D(400,220),10,32,1);
+	sword.addComponent<OwnerComponent>(&player, true);
+	sword.addComponent<TransformComponent>(Vector2D(48,-16),10,32,1);
 	sword.addComponent<SpriteComponent>("projectile");
 	sword.addComponent<ColliderComponent>("weapon");
 	sword.addGroup(groupWeapons);
