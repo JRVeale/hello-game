@@ -2,8 +2,8 @@
 
 //eventually all components will have their own files, but for now...
 #include "ECS.h"
-#include "OwnerComponent.h"
 #include "TransformComponent.h"
+#include "OwnerComponent.h"
 #include "SpriteComponent.h"
 #include "KeyboardController.h"
 #include "ColliderComponent.h"

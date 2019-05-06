@@ -61,6 +61,7 @@ public:
 		//back in as scrolling now dealt with by camera
 		position.x += velocity.x * speed;
 		position.y += velocity.y * speed;
+
 	}
 
 	Vector2D getVectorTo(Vector2D point) {
