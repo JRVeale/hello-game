@@ -11,4 +11,4 @@
 #include "ProjectileComponent.h"
 #include "StatusComponent.h"
 #include "AudioComponent.h"
-
+#include "SwordComponent.h"

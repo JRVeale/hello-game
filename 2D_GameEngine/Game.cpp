@@ -85,6 +85,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height,
 	sword.addComponent<TransformComponent>(Vector2D(48,-16),10,32,1);
 	sword.addComponent<SpriteComponent>("projectile");
 	sword.addComponent<ColliderComponent>("weapon");
+	sword.addComponent<SwordComponent>();
 	sword.addGroup(groupWeapons);
 
 
